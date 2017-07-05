@@ -3,6 +3,7 @@ const app = new Koa();
 const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
 const uuid = require('uuid/v4');
+const cors = require('koa-cors');
 const _ = require('lodash');
 
 const PostsController = {
@@ -36,10 +37,11 @@ router
 
 
 app
+  .use(cors())
   .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods());
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('App is listening');
 });
