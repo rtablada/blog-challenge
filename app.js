@@ -6,11 +6,20 @@ const uuid = require('uuid/v4');
 const cors = require('koa-cors');
 const _ = require('lodash');
 
+function initData() {
+  const data = {
+    title: 'My First Post',
+    body: 'Node is omakase',
+  };
+
+  return JSON.stringify(data);
+}
+
 const PostsController = {
   async index(ctx) {
     let posts = ctx.cookies.get('posts');
     if (!posts) {
-      posts = '{}';
+      posts = initData();
 
       ctx.cookies.set('posts', posts);
     }
