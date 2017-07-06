@@ -7,10 +7,14 @@ const cors = require('koa-cors');
 const _ = require('lodash');
 
 function initData() {
-  const data = {
+  const item = {
+    id: uuid(),
     title: 'My First Post',
     body: 'Node is omakase',
   };
+
+  const data = {};
+  data[item.id] = item;
 
   return JSON.stringify(data);
 }
@@ -38,11 +42,20 @@ const PostsController = {
 
     ctx.body = newPost;
   },
+
+  async reset(ctx) {
+    const posts = initData();
+
+    ctx.cookies.set('posts', posts);
+
+    ctx.body = _.values(JSON.parse(posts));
+  },
 };
 
 router
   .get('/posts', PostsController.index)
-  .post('/posts', PostsController.store);
+  .post('/posts', PostsController.store)
+  .get('/reset', PostsController.reset);
 
 
 app
